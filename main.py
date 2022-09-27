@@ -1,18 +1,26 @@
 #!/usr/bin/env python
 # pylint: disable=unused-argument, wrong-import-position
-# This program is dedicated to the public domain under the CC0 license.
+
+
+# ===================================================================
+# Author: Rafael Fernández Sánchez
+# Email: rafwill2@gmail.com
+# Github: @rafwill
+#
+# ABOUT COPYING OR USING PARTIAL INFORMATION:
+# This script was originally created by Rafael Fernández. Any
+# explicit usage of this script or its contents is granted
+# according to the public domain under the CC0 license.
+#
 # Implemented follow guidelines in PTB (Python Telegram Bot)
-
-"""
-
-Simple Bot to reply to Telegram messages in Triboost telegram chat.
-If you have any question please write to @rafwill in Github
-
-"""
+#
+# Simple Bot to reply to Telegram messages in Triboost telegram chat.
+# ===================================================================
 
 
-import logging
-
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes, Updater, CallbackContext
+from text import *
 from telegram import __version__ as TG_VER
 
 try:
@@ -27,42 +35,7 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
         f"visit https://docs.python-telegram-bot.org/en/v{TG_VER}/examples.html"
     )
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
-
-
-# Useful variables for bot
-TOKEN = "5787135370:AAGq-UF0eqSyO012pMTNJQBGuZU6rMqi9bw"
-chat_id = 100153954924
-startmessage = (
-    "Soy Tribot, tu asistente virtual.\n\n" 
-    "Intentaré ayudarte en las preguntas que te haces día"
-    " a día. Por ejemplo, me puedes preguntar que entrenamiento" 
-    " presencial hay cada dia, donde está la piscina del centro"
-    " deportivo Amorós y otras cosas que iras descubriendo"
-    " dentro de poco.\n\n"
-    "Para saber que puedo hacer, pon en tu teclado /help\n\n"
-    "Si descubres que estoy funcionando mal o tienes alguna "
-    "sugerencia, puedes ponerte en contacto con @rafwill,"
-    " mi hacedor. Si tienes dudas acerca del club escríbenos a "
-    " hola@triboost.club. Para todo lo demás...google es"
-    " tu amigo."
-)
-help_text = (
-    "Aquí puedes ver los comandos que te ayudaran a interactuar "
-    "conmigo, tribot. \n\nComandos:\n\n"
-    "/help - Este mensaje\n"
-    "/start - Mensaje de Bienvenida\n"
-    "/entrenamientodeldia - Elije el día de la semana para "
-    " consultar que entrenamientos dirigidos tenemos\n"
-    "/localizaciones - Aquí podrás ver todas las localizaciones "
-    " donde quedamos para hacer los entrenamientos. Puedes "
-    " consultar las direcciones de las piscinas, o del estadio de "
-    " Vallehermoso así como los puntos de salida de las grupetas ciclistas\n"
-    "/umbrales - Localización del Excel para calcular tus umbrales\n"
-    "/noticias - Mensajes importantes\n"
-)
-#lunes_text =("Los Lunes tenemos los siguientes entrenamientos dirigidos: \n\nNATACIÓN PRADILLO \n2 calles / 12 triboosters \n🕢 15:00h \n📍 Piscina PRADILLO \n\nNATACIÓN OCHOA \n3 calles / 24 triboosters \n🕢 20:00h \n📍 Piscina OCHOA \n\nRUNNING MADRID RIO \n🕢 19:50h \n🏃🏽 20:00 \n📍 CASA DEL RELOJ")
+import logging
 
 # Enable logging
 logging.basicConfig(
@@ -70,6 +43,10 @@ logging.basicConfig(
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+
+# Useful variables for bot
+TOKEN = "5787135370:AAGq-UF0eqSyO012pMTNJQBGuZU6rMqi9bw"
+chat_id = 100153954924
 
 
 #Principal commands
@@ -81,54 +58,78 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     first_name = update.effective_user.first_name
     username = update.effective_user.username
     await context.bot.sendMessage(chat_id, text=f"Hola {username}! {startmessage}")
+   
           
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
     await update.message.reply_text(help_text)
 
-async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Lo siento, no entiendo este comando.")
-
-#Secondary commands
-async def localizaciones(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Aquí podrás ver todas las localizaciones donde quedamos para hacer los entrenamientos. Puedes consultar las direcciones de las piscinas, del estadio de Vallehermoso así como los puntos de salida de las grupetas ciclistas.", reply_markup=ReplyKeyboardMarkup(buttons))
-
 async def umbrales(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Consulta el siguiente Excel para calcular tus umbrales: https://docs.google.com/spreadsheets/d/1DwEN1k5LJ_MhEZYYcES20x1RYpUztg0Ug64zx4Erq80/edit?usp=sharing.")
-    
-async def entrenamientodeldia(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Elije el día de la semana para consultar que entrenamientos dirigidos tenemos.")    
-    
+       
 async def noticias(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Mensajes importantes.")   
-    
 
-#Test botones
-async def test(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Sends a message with three inline buttons attached."""
+async def entrenamientodeldia(update: Update, context: CallbackContext) -> None:
+
     keyboard = [
-        [
-            InlineKeyboardButton("Option 1", callback_data="1"),
-            InlineKeyboardButton("Option 2", callback_data="2"),
-        ],
-        [InlineKeyboardButton("Option 3", callback_data="3")],
+     [
+        InlineKeyboardButton("Lunes", callback_data='1'),
+        InlineKeyboardButton("Martes", callback_data='2'),
+        InlineKeyboardButton("Miércoles", callback_data='3'),
+        InlineKeyboardButton("Jueves", callback_data='4'),
+        InlineKeyboardButton("Viernes", callback_data='5'),
+        InlineKeyboardButton("Sábado", callback_data='6'),
+     ]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text("Please choose:", reply_markup=reply_markup)
-
-
-async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Parses the CallbackQuery and updates the message text."""
-    query = update.callback_query
-
-    # CallbackQueries need to be answered, even if no notification to the user is needed
-    # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
-    await query.answer()
-
-    await query.edit_message_text(text=f"Selected option: {query.data}")
+    await update.message.reply_text("Elije el día de la semana para consultar que entrenamientos dirigidos tenemos", reply_markup=reply_markup)
     
+async def localizaciones(update: Update, context: CallbackContext) -> None:
+
+    keyboard = [
+     [
+        InlineKeyboardButton("Carrera", callback_data='7'),
+        InlineKeyboardButton("Piscina", callback_data='8'),
+        InlineKeyboardButton("Ciclismo", callback_data='9'),
+     ]
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text("Aquí podrás ver todas las localizaciones donde quedamos para hacer los entrenamientos. Puedes consultar las direcciones de las piscinas, del estadio de Vallehermoso así como los puntos de salida de las grupetas ciclistas", reply_markup=reply_markup)
+
+
+async def button(update: Update, context: CallbackContext):
+    query = update.callback_query
+    query.answer()
+    
+    # This will define which button the user tapped on (from what you assigned to "callback_data". As I assigned them "1" and "2"):
+    choice = query.data
+    
+    # Now u can define what choice ("callback_data") do what like this:
+    if choice == '1':
+        await update.callback_query.edit_message_text(lunes_text)
+    if choice == '2':
+        await update.callback_query.edit_message_text(martes_text)
+    if choice == '3':
+        await update.callback_query.edit_message_text(miercoles_text)
+    if choice == '4':
+        await update.callback_query.edit_message_text(jueves_text)
+    if choice == '5':
+        await update.callback_query.edit_message_text(viernes_text)
+    if choice == '6':
+        await update.callback_query.edit_message_text(sabado_text)
+    if choice == '7':
+        await update.callback_query.edit_message_text(localizacionescarrera)
+    if choice == '8':
+        await update.callback_query.edit_message_text(localizacionespiscina)
+    if choice == '9':
+        await update.callback_query.edit_message_text(localizacionesciclismo)
+       
+      
     
 def main() -> None:
     """Run the bot."""
@@ -145,9 +146,8 @@ def main() -> None:
     
     
     # Other handlers
-    #application.add_handler(MessageHandler(filters.COMMAND, unknown)) # este mensaje choca con los botones
-    application.add_handler(CommandHandler("test", test))
     application.add_handler(CallbackQueryHandler(button))
+    
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
