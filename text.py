@@ -43,8 +43,8 @@ help_text = (
 )
 lunes_text = ("Los Lunes tenemos los siguientes entrenamientos dirigidos: \n\nNATACIÓN PRADILLO \n2 calles / 12 triboosters \n🕢 15:00h \n📍 Piscina PRADILLO \n\nNATACIÓN OCHOA \n3 calles / 24 triboosters \n🕢 20:00h \n📍 Piscina OCHOA \n\nRUNNING MADRID RIO \n🕢 19:50h \n🏃🏽 20:00 \n📍 CASA DEL RELOJ")
 martes_text = ("Los Martes tenemos los siguientes entrenamientos dirigidos: \n\nRUNNING MADRID RIO \n🕢 19:50h \n🏃🏽 20:00 \n📍 CASA DEL RELOJ \n\nNATACIÓN OCHOA \n3 calles / 24 triboosters \n🕢 20:00h \n📍 Piscina OCHOA ")
-miercoles_text = ("Los Miércoles tenemos los siguientes entrenamientos dirigidos: \n\nNATACIÓN PRADILLO\n2 calles / 12 triboosters\n🕢 15:00h \n📍 Piscina PRADILLO\n\nNATACIÓN OCHOA \n3 calles / 24 triboosters\n🕢 20:00h\n📍 Piscina OCHOA ")
-jueves_text = ("Los Jueves tenemos los siguientes entrenamientos dirigidos: \n\nESTADIO VALLEHERMOSO \n🕢 14:20h \n🏃🏽 14:30h \n📍 VALLEHERMOSO \nRUNNING MADRID RIO \n🕢 19:50h \n🏃🏽 20:00 \n📍 CASA DEL RELOJ \n\nNATACIÓN OCHOA \n3 calles / 24 triboosters \n🕢 20:00h \n📍 Piscina OCHOA ")
+miercoles_text = ("Los Miércoles tenemos los siguientes entrenamientos dirigidos: \n\nESPARTANA\n2 calles / 12 triboosters\n🕢 07:30h \n📍 Piscina OCHOA \nNATACIÓN PRADILLO\n2 calles / 12 triboosters\n🕢 15:00h \n📍 Piscina PRADILLO\n\nNATACIÓN OCHOA \n3 calles / 24 triboosters\n🕢 20:00h\n📍 Piscina OCHOA ")
+jueves_text = ("Los Jueves tenemos los siguientes entrenamientos dirigidos: \n\nESTADIO VALLEHERMOSO \n🕢 14:20h \n🏃🏽 14:30h \n📍 VALLEHERMOSO\n\nRUNNING MADRID RIO \n🕢 19:50h \n🏃🏽 20:00 \n📍 CASA DEL RELOJ \n\nNATACIÓN OCHOA \n3 calles / 24 triboosters \n🕢 20:00h \n📍 Piscina OCHOA ")
 viernes_text = ("Los Viernes tenemos los siguientes entrenamientos dirigidos: \n\nNATACIÓN OCHOA \n2 calles / 16 triboosters + 1 calle libre para tiradas libres \n🕢 15:00 nadando cual🦈 \n📍 Piscina OCHOA")
 sabado_text = ("Los Sábados tenemos los siguientes entrenamientos dirigidos: \n\nNATACIÓN AMORÓS \n4 calles / 32 triboosters \n🕢 8:00h nadando cual🦈 \n📍 Piscina AMORÓS ")
 
